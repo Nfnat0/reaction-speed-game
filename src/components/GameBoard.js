@@ -21,6 +21,12 @@ const generateRandomColor = () => {
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
+const generateRandomPosition = (maxWidth, maxHeight) => {
+  const x = Math.floor(Math.random() * (maxWidth - 50));
+  const y = Math.floor(Math.random() * (maxHeight - 50));
+  return { x, y };
+};
+
 const GameBoard = () => {
   const dispatch = useDispatch();
   const circles = useSelector(selectCircles);
@@ -30,8 +36,10 @@ const GameBoard = () => {
 
   useEffect(() => {
     const circleInterval = setInterval(() => {
-      dispatch(addCircle(generateRandomColor()));
-    }, 1000);
+      const color = generateRandomColor();
+      const position = generateRandomPosition(1200, 600); // Adjust dimensions as needed
+      dispatch(addCircle({ color, ...position }));
+    }, 300);
 
     const timerInterval = setInterval(() => {
       dispatch(decrementTime());
@@ -55,15 +63,22 @@ const GameBoard = () => {
     dispatch(removeCircle(index));
   };
 
+  const handleReset = () => {
+    dispatch(resetGame());
+  };
+
   return (
-    <div>
+    <div className="game-container">
       <h2>Score: {score}</h2>
       <h2>Time Left: {timeLeft} seconds</h2>
-      <div>
-        {circles.map((color, index) => (
+      <button onClick={handleReset}>Reset</button>
+      <div className="game-area">
+        {circles.map(({ color, x, y }, index) => (
           <Circle
             key={index}
             color={color}
+            x={x}
+            y={y}
             onClick={() => handleCircleClick(index, color)}
           />
         ))}
