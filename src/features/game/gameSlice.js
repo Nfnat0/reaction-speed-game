@@ -5,7 +5,12 @@ const initialState = {
   circles: [],
   score: 0,
   timeLeft: 30,
-  rule: "red",
+  rules: {
+    colors: ["red"],
+    shapes: [],
+    numbers: [],
+    alphabets: [],
+  },
 };
 
 const gameSlice = createSlice({
@@ -33,8 +38,8 @@ const gameSlice = createSlice({
       state.score = 0;
       state.timeLeft = 30;
     },
-    setRule: (state, action) => {
-      state.rule = action.payload;
+    setRules: (state, action) => {
+      state.rules = action.payload;
     },
   },
 });
@@ -45,7 +50,7 @@ export const {
   incrementScore,
   decrementTime,
   resetGame,
-  setRule,
+  setRules,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

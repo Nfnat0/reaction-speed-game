@@ -5,7 +5,13 @@ body {
   align-items: center;
   height: 100vh;
   margin: 0;
-  background-color: #f0f0f0;
+  background: linear-gradient(
+    299deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(173, 173, 239, 1) 94%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  color: white;
   font-family: Arial, sans-serif;
 }
 
@@ -42,6 +48,12 @@ h2 {
 }
 
 select {
+  padding: 5px;
+  margin: 10px;
+  font-size: 16px;
+}
+
+input {
   padding: 5px;
   margin: 10px;
   font-size: 16px;
