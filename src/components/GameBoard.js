@@ -8,6 +8,7 @@ import {
   incrementScore,
   decrementTime,
   resetGame,
+  setRule,
 } from "../features/game/gameSlice";
 import {
   selectCircles,
@@ -67,11 +68,26 @@ const GameBoard = () => {
     dispatch(resetGame());
   };
 
+  const handleRuleChange = (event) => {
+    dispatch(setRule(event.target.value));
+  };
+
   return (
     <div className="game-container">
-      <h2>Score: {score}</h2>
-      <h2>Time Left: {timeLeft} seconds</h2>
-      <button onClick={handleReset}>Reset</button>
+      <div className="game-info">
+        <h2>Score: {score}</h2>
+        <h2>Time Left: {timeLeft} seconds</h2>
+        <button onClick={handleReset}>Reset</button>
+        <div>
+          <label htmlFor="rule-select">Select Rule: </label>
+          <select id="rule-select" onChange={handleRuleChange} value={rule}>
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+            <option value="green">Green</option>
+            <option value="yellow">Yellow</option>
+          </select>
+        </div>
+      </div>
       <div className="game-area">
         {circles.map(({ color, x, y }, index) => (
           <Circle

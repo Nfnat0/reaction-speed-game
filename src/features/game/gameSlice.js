@@ -33,6 +33,9 @@ const gameSlice = createSlice({
       state.score = 0;
       state.timeLeft = 30;
     },
+    setRule: (state, action) => {
+      state.rule = action.payload;
+    },
   },
 });
 
@@ -42,6 +45,7 @@ export const {
   incrementScore,
   decrementTime,
   resetGame,
+  setRule,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;
