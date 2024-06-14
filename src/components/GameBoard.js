@@ -7,11 +7,17 @@ import {
   addShape,
   removeShape,
   incrementScore,
+  decrementScore,
   decrementTime,
   resetGame,
   removeShapeNoScore,
 } from "../features/game/gameSlice";
-import { selectScore, selectTimeLeft } from "../features/game/gameSelectors";
+import {
+  selectScore,
+  selectTimeLeft,
+  selectRules,
+  selectShapes,
+} from "../features/game/gameSelectors";
 
 const generateRandomColor = () => {
   const colors = ["red", "blue", "green", "yellow"];
@@ -38,6 +44,8 @@ const GameBoard = () => {
   const dispatch = useDispatch();
   const score = useSelector(selectScore);
   const timeLeft = useSelector(selectTimeLeft);
+  const rules = useSelector(selectRules);
+  const shapes = useSelector(selectShapes);
 
   useEffect(() => {
     const shapeInterval = setInterval(() => {
@@ -72,8 +80,25 @@ const GameBoard = () => {
   useEffect(() => {
     const handleKeyPress = (event) => {
       const letter = event.key.toUpperCase();
-      dispatch(removeShape(letter));
-      dispatch(incrementScore());
+      const matchingShape = shapes.find((shape) => shape.letter === letter);
+
+      if (matchingShape) {
+        const colorMatch =
+          rules.colors.length === 0 ||
+          rules.colors.includes(matchingShape.color);
+        const shapeMatch =
+          rules.shapes.length === 0 ||
+          rules.shapes.includes(matchingShape.shape);
+
+        if (colorMatch && shapeMatch) {
+          dispatch(removeShape(letter));
+          dispatch(incrementScore());
+        } else {
+          dispatch(decrementScore());
+        }
+      } else {
+        dispatch(decrementScore());
+      }
     };
 
     window.addEventListener("keypress", handleKeyPress);
@@ -81,7 +106,7 @@ const GameBoard = () => {
     return () => {
       window.removeEventListener("keypress", handleKeyPress);
     };
-  }, [dispatch]);
+  }, [rules, shapes, dispatch]);
 
   const handleReset = () => {
     dispatch(resetGame());

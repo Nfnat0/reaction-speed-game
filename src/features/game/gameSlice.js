@@ -23,8 +23,16 @@ const gameSlice = createSlice({
         (shape) => shape.letter !== action.payload
       );
     },
+    removeShapeNoScore: (state, action) => {
+      state.shapes = state.shapes.filter(
+        (shape) => shape.id !== action.payload
+      );
+    },
     incrementScore: (state) => {
       state.score += 1;
+    },
+    decrementScore: (state) => {
+      state.score -= 1;
     },
     decrementTime: (state) => {
       if (state.timeLeft > 0) {
@@ -39,22 +47,18 @@ const gameSlice = createSlice({
     setRule: (state, action) => {
       state.rules[action.payload.type] = action.payload.value;
     },
-    removeShapeNoScore: (state, action) => {
-      state.shapes = state.shapes.filter(
-        (shape) => shape.id !== action.payload
-      );
-    },
   },
 });
 
 export const {
   addShape,
   removeShape,
+  removeShapeNoScore,
   incrementScore,
+  decrementScore,
   decrementTime,
   resetGame,
   setRule,
-  removeShapeNoScore,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;
