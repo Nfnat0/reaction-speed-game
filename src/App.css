@@ -64,30 +64,35 @@ h2 {
   margin: 10px 0;
 }
 
-.rule-selector .list {
+.rule-selector {
   display: flex;
-  margin: 10px 0;
+  justify-content: space-around;
+  margin: 20px 0;
 }
 
-.rule-selector .list label {
-  margin: 5px 0;
+.rule-group {
+  display: flex;
+  align-items: center;
 }
 
-.rule-selector select {
-  padding: 5px;
-  margin: 10px 0;
+.rule-button {
+  padding: 10px 20px;
+  margin: 5px;
   font-size: 16px;
-  height: auto;
-  width: 150px;
-  border: 1px solid #fff;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  cursor: pointer;
+  border: none;
   border-radius: 5px;
+  background-color: #444;
+  color: white;
+  transition: background-color 0.3s ease;
 }
 
-.rule-selector select:focus {
-  outline: none;
-  border: 1px solid #ff7f50;
+.rule-button.active {
+  background-color: #ff7f50;
+}
+
+.rule-button:hover {
+  background-color: #666;
 }
 
 .rule-selector .list input[type="checkbox"] {

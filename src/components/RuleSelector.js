@@ -8,102 +8,57 @@ const RuleSelector = () => {
   const dispatch = useDispatch();
   const rules = useSelector(selectRules);
 
-  const handleRuleChange = (type, selectedOptions) => {
-    const value = Array.from(selectedOptions, (option) => option.value);
-    dispatch(setRule({ type, value }));
+  const handleRuleToggle = (type, value) => {
+    const currentValues = rules[type];
+    const newValues = currentValues.includes(value)
+      ? currentValues.filter((v) => v !== value)
+      : [...currentValues, value];
+    dispatch(setRule({ type, value: newValues }));
   };
+
+  const speeds = [500, 1000, 1500]; // Speeds in milliseconds
 
   return (
     <div className="rule-selector">
-      <div id="colors" className="list">
-        <label htmlFor="colors">Colors: </label>
-        <label>
-          <input
-            type="checkbox"
-            value="red"
-            checked={rules.colors.includes("red")}
-            onChange={(e) =>
-              handleRuleChange(
-                "colors",
-                e.target.parentNode.parentNode.querySelectorAll("input:checked")
-              )
-            }
-          />{" "}
-          Red
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            value="blue"
-            checked={rules.colors.includes("blue")}
-            onChange={(e) =>
-              handleRuleChange(
-                "colors",
-                e.target.parentNode.parentNode.querySelectorAll("input:checked")
-              )
-            }
-          />{" "}
-          Blue
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            value="green"
-            checked={rules.colors.includes("green")}
-            onChange={(e) =>
-              handleRuleChange(
-                "colors",
-                e.target.parentNode.parentNode.querySelectorAll("input:checked")
-              )
-            }
-          />{" "}
-          Green
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            value="yellow"
-            checked={rules.colors.includes("yellow")}
-            onChange={(e) =>
-              handleRuleChange(
-                "colors",
-                e.target.parentNode.parentNode.querySelectorAll("input:checked")
-              )
-            }
-          />{" "}
-          Yellow
-        </label>
+      <div className="rule-group">
+        <h3>Colors:</h3>
+        {["red", "blue", "green", "yellow"].map((color) => (
+          <button
+            key={color}
+            className={`rule-button ${
+              rules.colors.includes(color) ? "active" : ""
+            }`}
+            onClick={() => handleRuleToggle("colors", color)}
+          >
+            {color}
+          </button>
+        ))}
       </div>
-      <div id="shapes" className="list">
-        <label htmlFor="shapes">Shapes: </label>
-        <label>
-          <input
-            type="checkbox"
-            value="circle"
-            checked={rules.shapes.includes("circle")}
-            onChange={(e) =>
-              handleRuleChange(
-                "shapes",
-                e.target.parentNode.parentNode.querySelectorAll("input:checked")
-              )
-            }
-          />{" "}
-          Circle
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            value="square"
-            checked={rules.shapes.includes("square")}
-            onChange={(e) =>
-              handleRuleChange(
-                "shapes",
-                e.target.parentNode.parentNode.querySelectorAll("input:checked")
-              )
-            }
-          />{" "}
-          Square
-        </label>
+      <div className="rule-group">
+        <h3>Shapes:</h3>
+        {["circle", "square"].map((shape) => (
+          <button
+            key={shape}
+            className={`rule-button ${
+              rules.shapes.includes(shape) ? "active" : ""
+            }`}
+            onClick={() => handleRuleToggle("shapes", shape)}
+          >
+            {shape}
+          </button>
+        ))}
+      </div>
+      <div className="rule-group">
+        <h3>Speed:</h3>
+        {speeds.map((speed) => (
+          <button
+            key={speed}
+            className={`rule-button ${rules.speed === speed ? "active" : ""}`}
+            onClick={() => dispatch(setRule({ type: "speed", value: speed }))}
+          >
+            {speed} ms
+          </button>
+        ))}
       </div>
     </div>
   );

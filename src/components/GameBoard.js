@@ -60,7 +60,7 @@ const GameBoard = () => {
       setTimeout(() => {
         dispatch(removeShapeNoScore(id));
       }, 1000);
-    }, 1000);
+    }, rules.speed || 1000);
 
     const timerInterval = setInterval(() => {
       dispatch(decrementTime());
@@ -75,7 +75,7 @@ const GameBoard = () => {
       clearInterval(shapeInterval);
       clearInterval(timerInterval);
     };
-  }, [timeLeft, dispatch]);
+  }, [timeLeft, dispatch, rules.speed]);
 
   useEffect(() => {
     const handleKeyPress = (event) => {
