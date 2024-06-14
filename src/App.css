@@ -44,6 +44,19 @@ body {
   border-radius: 5px;
 }
 
+.result-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 1200px; /* Match dimensions to game-area */
+  height: 500px; /* Match dimensions to game-area */
+  border: 2px solid #fff;
+  background-color: #333;
+  margin: 20px auto;
+  overflow: hidden;
+  border-radius: 10px;
+}
 button {
   padding: 10px 20px;
   font-size: 16px;

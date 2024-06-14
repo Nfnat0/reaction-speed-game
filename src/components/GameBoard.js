@@ -1,8 +1,9 @@
 // src/components/GameBoard.js
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import RuleSelector from "./RuleSelector";
 import GameArea from "./GameArea";
+import Result from "./Result";
 import {
   addShape,
   removeShape,
@@ -47,7 +48,19 @@ const GameBoard = () => {
   const rules = useSelector(selectRules);
   const shapes = useSelector(selectShapes);
 
+  const [mistakes, setMistakes] = useState(0);
+  const [misses, setMisses] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
+
   useEffect(() => {
+    if (timeLeft === 0) {
+      setGameOver(true);
+    }
+  }, [timeLeft]);
+
+  useEffect(() => {
+    if (gameOver) return;
+
     const shapeInterval = setInterval(() => {
       const color = generateRandomColor();
       const shape = generateRandomShape();
@@ -58,7 +71,19 @@ const GameBoard = () => {
 
       // Remove shape after 1 second if not typed
       setTimeout(() => {
-        dispatch(removeShapeNoScore(id));
+        const matchingShape = shapes.find((s) => s.id === id);
+        if (matchingShape) {
+          const colorMatch =
+            rules.colors.length === 0 ||
+            rules.colors.includes(matchingShape.color);
+          const shapeMatch =
+            rules.shapes.length === 0 ||
+            rules.shapes.includes(matchingShape.shape);
+          if (colorMatch && shapeMatch) {
+            setMisses((misses) => misses + 1);
+          }
+          dispatch(removeShapeNoScore(id));
+        }
       }, 1000);
     }, rules.speed || 1000);
 
@@ -66,16 +91,19 @@ const GameBoard = () => {
       dispatch(decrementTime());
     }, 1000);
 
-    if (timeLeft === 0) {
-      clearInterval(shapeInterval);
-      clearInterval(timerInterval);
-    }
-
     return () => {
       clearInterval(shapeInterval);
       clearInterval(timerInterval);
     };
-  }, [timeLeft, dispatch, rules.speed]);
+  }, [
+    timeLeft,
+    gameOver,
+    dispatch,
+    rules.speed,
+    rules.colors,
+    rules.shapes,
+    shapes,
+  ]);
 
   useEffect(() => {
     const handleKeyPress = (event) => {
@@ -94,9 +122,11 @@ const GameBoard = () => {
           dispatch(removeShape(letter));
           dispatch(incrementScore());
         } else {
+          setMistakes((mistakes) => mistakes + 1);
           dispatch(decrementScore());
         }
       } else {
+        setMistakes((mistakes) => mistakes + 1);
         dispatch(decrementScore());
       }
     };
@@ -110,6 +140,9 @@ const GameBoard = () => {
 
   const handleReset = () => {
     dispatch(resetGame());
+    setMistakes(0);
+    setMisses(0);
+    setGameOver(false);
   };
 
   return (
@@ -120,7 +153,16 @@ const GameBoard = () => {
         <button onClick={handleReset}>Reset</button>
       </div>
       <RuleSelector />
-      <GameArea />
+      {gameOver ? (
+        <Result
+          score={score}
+          mistakes={mistakes}
+          misses={misses}
+          onReset={handleReset}
+        />
+      ) : (
+        <GameArea />
+      )}
     </div>
   );
 };
