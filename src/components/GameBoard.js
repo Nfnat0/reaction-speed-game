@@ -52,7 +52,7 @@ const GameBoard = () => {
       const color = generateRandomColor();
       const shape = generateRandomShape();
       const letter = generateRandomLetter();
-      const position = generateRandomPosition(1200, 500); // Adjust dimensions as needed
+      const position = generateRandomPosition(1600, 500); // Adjust dimensions as needed
       const id = Math.random().toString(36).substring(2, 9); // Generate a unique ID for each shape
       dispatch(addShape({ id, color, shape, letter, ...position }));
 

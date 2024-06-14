@@ -15,8 +15,8 @@ const RuleSelector = () => {
 
   return (
     <div className="rule-selector">
-      <label htmlFor="colors">Colors: </label>
       <div id="colors" className="list">
+        <label htmlFor="colors">Colors: </label>
         <label>
           <input
             type="checkbox"
@@ -74,8 +74,8 @@ const RuleSelector = () => {
           Yellow
         </label>
       </div>
-      <label htmlFor="shapes">Shapes: </label>
       <div id="shapes" className="list">
+        <label htmlFor="shapes">Shapes: </label>
         <label>
           <input
             type="checkbox"
