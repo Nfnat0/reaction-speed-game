@@ -93,6 +93,7 @@ const GameBoard = () => {
 
   useEffect(() => {
     const handleKeyPress = (event) => {
+      if (gameOver) return;
       const letter = event.key.toUpperCase();
       const matchingShape = shapes.find((shape) => shape.letter === letter);
 
@@ -122,7 +123,7 @@ const GameBoard = () => {
     return () => {
       window.removeEventListener("keypress", handleKeyPress);
     };
-  }, [rules, shapes, dispatch]);
+  }, [gameOver, rules, shapes, dispatch]);
 
   const handleReset = () => {
     dispatch(resetGame());
