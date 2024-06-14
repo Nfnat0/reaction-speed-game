@@ -12,6 +12,7 @@ const Shape = ({ id, color, shape, letter, x, y }) => {
     left: `${x}px`,
     top: `${y}px`,
     fontSize: "3rem",
+    color: "#333",
   };
 
   return (

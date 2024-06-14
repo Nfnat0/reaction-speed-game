@@ -8,7 +8,6 @@ const initialState = {
   rules: {
     colors: ["red"],
     shapes: ["circle", "square"],
-    letters: [],
   },
 };
 

@@ -105,19 +105,6 @@ const RuleSelector = () => {
           Square
         </label>
       </div>
-      <label htmlFor="letters">Letters: </label>
-      <select
-        id="letters"
-        multiple
-        value={rules.letters}
-        onChange={(e) => handleRuleChange("letters", e.target.selectedOptions)}
-      >
-        {"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((letter) => (
-          <option key={letter} value={letter}>
-            {letter}
-          </option>
-        ))}
-      </select>
     </div>
   );
 };

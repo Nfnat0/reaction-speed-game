@@ -11,11 +11,7 @@ import {
   resetGame,
   removeShapeNoScore,
 } from "../features/game/gameSlice";
-import {
-  selectScore,
-  selectTimeLeft,
-  selectRules,
-} from "../features/game/gameSelectors";
+import { selectScore, selectTimeLeft } from "../features/game/gameSelectors";
 
 const generateRandomColor = () => {
   const colors = ["red", "blue", "green", "yellow"];
@@ -33,8 +29,8 @@ const generateRandomLetter = () => {
 };
 
 const generateRandomPosition = (maxWidth, maxHeight) => {
-  const x = Math.floor(Math.random() * (maxWidth - 50));
-  const y = Math.floor(Math.random() * (maxHeight - 50));
+  const x = Math.floor(Math.random() * (maxWidth - 100));
+  const y = Math.floor(Math.random() * (maxHeight - 100));
   return { x, y };
 };
 
@@ -42,15 +38,14 @@ const GameBoard = () => {
   const dispatch = useDispatch();
   const score = useSelector(selectScore);
   const timeLeft = useSelector(selectTimeLeft);
-  const rules = useSelector(selectRules);
 
   useEffect(() => {
     const shapeInterval = setInterval(() => {
       const color = generateRandomColor();
       const shape = generateRandomShape();
       const letter = generateRandomLetter();
-      const position = generateRandomPosition(1200, 600); // Adjust dimensions as needed
-      const id = Math.random().toString(36).substr(2, 9); // Generate a unique ID for each shape
+      const position = generateRandomPosition(1200, 500); // Adjust dimensions as needed
+      const id = Math.random().toString(36).substring(2, 9); // Generate a unique ID for each shape
       dispatch(addShape({ id, color, shape, letter, ...position }));
 
       // Remove shape after 1 second if not typed
@@ -77,10 +72,8 @@ const GameBoard = () => {
   useEffect(() => {
     const handleKeyPress = (event) => {
       const letter = event.key.toUpperCase();
-      if (rules.letters.includes(letter)) {
-        dispatch(removeShape(letter));
-        dispatch(incrementScore());
-      }
+      dispatch(removeShape(letter));
+      dispatch(incrementScore());
     };
 
     window.addEventListener("keypress", handleKeyPress);
@@ -88,7 +81,7 @@ const GameBoard = () => {
     return () => {
       window.removeEventListener("keypress", handleKeyPress);
     };
-  }, [rules.letters, dispatch]);
+  }, [dispatch]);
 
   const handleReset = () => {
     dispatch(resetGame());
