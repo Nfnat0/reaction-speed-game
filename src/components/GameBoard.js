@@ -49,7 +49,6 @@ const GameBoard = () => {
   const shapes = useSelector(selectShapes);
 
   const [mistakes, setMistakes] = useState(0);
-  const [misses, setMisses] = useState(0);
   const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
@@ -72,26 +71,13 @@ const GameBoard = () => {
       // Remove shape after 1 second if not typed
       setTimeout(() => {
         dispatch(removeShapeNoScore(id));
-
-        const matchingShape = shapes.find((s) => s.id === id);
-        if (matchingShape) {
-          const colorMatch =
-            rules.colors.length === 0 ||
-            rules.colors.includes(matchingShape.color);
-          const shapeMatch =
-            rules.shapes.length === 0 ||
-            rules.shapes.includes(matchingShape.shape);
-          if (colorMatch && shapeMatch) {
-            setMisses((misses) => misses + 1);
-          }
-        }
       }, 1000);
     }, rules.speed || 1000);
 
     return () => {
       clearInterval(shapeInterval);
     };
-  }, [gameOver, rules.speed, rules.colors, rules.shapes, shapes, dispatch]);
+  }, [gameOver, rules.speed, rules.colors, rules.shapes, dispatch]);
 
   useEffect(() => {
     if (gameOver) return;
@@ -141,7 +127,6 @@ const GameBoard = () => {
   const handleReset = () => {
     dispatch(resetGame());
     setMistakes(0);
-    setMisses(0);
     setGameOver(false);
   };
 
@@ -154,12 +139,7 @@ const GameBoard = () => {
       </div>
       <RuleSelector />
       {gameOver ? (
-        <Result
-          score={score}
-          mistakes={mistakes}
-          misses={misses}
-          onReset={handleReset}
-        />
+        <Result score={score} mistakes={mistakes} onReset={handleReset} />
       ) : (
         <GameArea />
       )}
