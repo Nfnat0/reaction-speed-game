@@ -47,14 +47,20 @@ h2 {
   margin: 10px 0;
 }
 
-select {
-  padding: 5px;
-  margin: 10px;
-  font-size: 16px;
+.rule-selector .list {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
 }
 
-input {
+.rule-selector .list label {
+  margin: 5px 0;
+}
+
+.rule-selector select {
   padding: 5px;
-  margin: 10px;
+  margin: 10px 0;
   font-size: 16px;
+  height: auto;
+  width: 150px;
 }

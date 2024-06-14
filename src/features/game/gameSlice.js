@@ -2,14 +2,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  circles: [],
+  shapes: [],
   score: 0,
   timeLeft: 30,
   rules: {
     colors: ["red"],
-    shapes: [],
-    numbers: [],
-    alphabets: [],
+    shapes: ["circle", "square"],
+    letters: [],
   },
 };
 
@@ -17,12 +16,12 @@ const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-    addCircle: (state, action) => {
-      state.circles.push(action.payload);
+    addShape: (state, action) => {
+      state.shapes.push(action.payload);
     },
-    removeCircle: (state, action) => {
-      state.circles = state.circles.filter(
-        (_, index) => index !== action.payload
+    removeShape: (state, action) => {
+      state.shapes = state.shapes.filter(
+        (shape) => shape.letter !== action.payload
       );
     },
     incrementScore: (state) => {
@@ -34,23 +33,29 @@ const gameSlice = createSlice({
       }
     },
     resetGame: (state) => {
-      state.circles = [];
+      state.shapes = [];
       state.score = 0;
       state.timeLeft = 30;
     },
-    setRules: (state, action) => {
-      state.rules = action.payload;
+    setRule: (state, action) => {
+      state.rules[action.payload.type] = action.payload.value;
+    },
+    removeShapeNoScore: (state, action) => {
+      state.shapes = state.shapes.filter(
+        (shape) => shape.id !== action.payload
+      );
     },
   },
 });
 
 export const {
-  addCircle,
-  removeCircle,
+  addShape,
+  removeShape,
   incrementScore,
   decrementTime,
   resetGame,
-  setRules,
+  setRule,
+  removeShapeNoScore,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;
