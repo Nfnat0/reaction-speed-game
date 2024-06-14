@@ -71,6 +71,8 @@ const GameBoard = () => {
 
       // Remove shape after 1 second if not typed
       setTimeout(() => {
+        dispatch(removeShapeNoScore(id));
+
         const matchingShape = shapes.find((s) => s.id === id);
         if (matchingShape) {
           const colorMatch =
@@ -82,28 +84,26 @@ const GameBoard = () => {
           if (colorMatch && shapeMatch) {
             setMisses((misses) => misses + 1);
           }
-          dispatch(removeShapeNoScore(id));
         }
       }, 1000);
     }, rules.speed || 1000);
+
+    return () => {
+      clearInterval(shapeInterval);
+    };
+  }, [gameOver, rules.speed, rules.colors, rules.shapes, shapes, dispatch]);
+
+  useEffect(() => {
+    if (gameOver) return;
 
     const timerInterval = setInterval(() => {
       dispatch(decrementTime());
     }, 1000);
 
     return () => {
-      clearInterval(shapeInterval);
       clearInterval(timerInterval);
     };
-  }, [
-    timeLeft,
-    gameOver,
-    dispatch,
-    rules.speed,
-    rules.colors,
-    rules.shapes,
-    shapes,
-  ]);
+  }, [gameOver, dispatch]);
 
   useEffect(() => {
     const handleKeyPress = (event) => {
