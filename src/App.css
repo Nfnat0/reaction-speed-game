@@ -119,3 +119,12 @@ h2 {
 .rule-selector .list label {
   color: #fff;
 }
+
+.glow-correct {
+  box-shadow: 0 0 25px 10px rgba(0, 0, 255, 0.7); /* Bluish glow */
+  background-color: rgba(0, 0, 255, 0.1); /* Bluish glow */
+}
+
+.glow-wrong {
+  box-shadow: 0 0 25px 10px rgba(255, 0, 0, 0.7); /* Reddish glow */
+}

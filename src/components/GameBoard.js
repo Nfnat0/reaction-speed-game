@@ -50,6 +50,7 @@ const GameBoard = () => {
 
   const [mistakes, setMistakes] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [glowEffect, setGlowEffect] = useState("");
 
   useEffect(() => {
     if (timeLeft === 0) {
@@ -108,14 +109,20 @@ const GameBoard = () => {
         if (colorMatch && shapeMatch) {
           dispatch(removeShape(letter));
           dispatch(incrementScore());
+          setGlowEffect("glow-correct");
         } else {
           setMistakes((mistakes) => mistakes + 1);
           dispatch(decrementScore());
+          setGlowEffect("glow-wrong");
         }
       } else {
         setMistakes((mistakes) => mistakes + 1);
         dispatch(decrementScore());
+        setGlowEffect("glow-wrong");
       }
+
+      // Remove the glow effect after a short delay
+      setTimeout(() => setGlowEffect(""), 500);
     };
 
     window.addEventListener("keypress", handleKeyPress);
@@ -132,7 +139,7 @@ const GameBoard = () => {
   };
 
   return (
-    <div className="game-container">
+    <div className={`game-container ${glowEffect}`}>
       <div className="game-info">
         <h2>Score: {score}</h2>
         <h2>Time Left: {timeLeft} seconds</h2>
