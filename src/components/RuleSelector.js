@@ -55,7 +55,7 @@ const RuleSelector = () => {
         <h3>Speed:</h3>
         <input
           type="range"
-          min="400"
+          min="200"
           max="2000"
           step="100"
           value={rules.speed || 1000}
