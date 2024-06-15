@@ -30,9 +30,13 @@ const generateRandomShape = () => {
   return shapes[Math.floor(Math.random() * shapes.length)];
 };
 
-const generateRandomLetter = () => {
+const generateRandomLetter = (existingLetters) => {
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  return letters[Math.floor(Math.random() * letters.length)];
+  const availableLetters = letters
+    .split("")
+    .filter((letter) => !existingLetters.includes(letter));
+  const randomIndex = Math.floor(Math.random() * availableLetters.length);
+  return availableLetters[randomIndex];
 };
 
 const generateRandomPosition = (maxWidth, maxHeight) => {
@@ -62,9 +66,10 @@ const GameBoard = () => {
     if (gameOver) return;
 
     const shapeInterval = setInterval(() => {
+      const existingLetters = shapes.map((shape) => shape.letter);
       const color = generateRandomColor();
       const shape = generateRandomShape();
-      const letter = generateRandomLetter();
+      const letter = generateRandomLetter(existingLetters);
       const position = generateRandomPosition(1600, 500); // Adjust dimensions as needed
       const id = Math.random().toString(36).substring(2, 9); // Generate a unique ID for each shape
       dispatch(addShape({ id, color, shape, letter, ...position }));
@@ -78,7 +83,7 @@ const GameBoard = () => {
     return () => {
       clearInterval(shapeInterval);
     };
-  }, [gameOver, rules.speed, rules.colors, rules.shapes, dispatch]);
+  }, [gameOver, rules.speed, rules.colors, rules.shapes, shapes, dispatch]);
 
   useEffect(() => {
     if (gameOver) return;
@@ -95,6 +100,7 @@ const GameBoard = () => {
   useEffect(() => {
     const handleKeyPress = (event) => {
       if (gameOver) return;
+
       const letter = event.key.toUpperCase();
       const matchingShape = shapes.find((shape) => shape.letter === letter);
 
