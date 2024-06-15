@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import RuleSelector from "./RuleSelector";
 import GameArea from "./GameArea";
 import Result from "./Result";
+import { store } from "../app/store";
 import {
   addShape,
   removeShape,
@@ -53,7 +54,9 @@ const GameBoard = () => {
   const shapes = useSelector(selectShapes);
 
   const [mistakes, setMistakes] = useState(0);
+  const [misses, setMisses] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [totalShapes, setTotalShapes] = useState(0); // Track total shapes displayed
   const [glowEffect, setGlowEffect] = useState("");
 
   useEffect(() => {
@@ -66,16 +69,31 @@ const GameBoard = () => {
     if (gameOver) return;
 
     const shapeInterval = setInterval(() => {
-      const existingLetters = shapes.map((shape) => shape.letter);
+      const existingLetters = store
+        .getState()
+        .game.shapes.map((shape) => shape.letter);
       const color = generateRandomColor();
       const shape = generateRandomShape();
       const letter = generateRandomLetter(existingLetters);
       const position = generateRandomPosition(1600, 500); // Adjust dimensions as needed
       const id = Math.random().toString(36).substring(2, 9); // Generate a unique ID for each shape
       dispatch(addShape({ id, color, shape, letter, ...position }));
+      setTotalShapes((totalShapes) => totalShapes + 1); // Increment total shapes displayed
 
-      // Remove shape after 1 second if not typed
       setTimeout(() => {
+        const currentShapes = store.getState().game.shapes; // Access the updated shapes directly from the store
+        const matchingShape = currentShapes.find((s) => s.id === id);
+        if (matchingShape) {
+          const colorMatch =
+            rules.colors.length === 0 ||
+            rules.colors.includes(matchingShape.color);
+          const shapeMatch =
+            rules.shapes.length === 0 ||
+            rules.shapes.includes(matchingShape.shape);
+          if (colorMatch && shapeMatch) {
+            setMisses((misses) => misses + 1);
+          }
+        }
         dispatch(removeShapeNoScore(id));
       }, 1000);
     }, rules.speed || 1000);
@@ -83,7 +101,7 @@ const GameBoard = () => {
     return () => {
       clearInterval(shapeInterval);
     };
-  }, [gameOver, rules.speed, rules.colors, rules.shapes, shapes, dispatch]);
+  }, [gameOver, rules.speed, rules.colors, rules.shapes, dispatch]);
 
   useEffect(() => {
     if (gameOver) return;
@@ -136,11 +154,13 @@ const GameBoard = () => {
     return () => {
       window.removeEventListener("keypress", handleKeyPress);
     };
-  }, [gameOver, rules, shapes, dispatch]);
+  }, [rules, shapes, dispatch, gameOver]);
 
   const handleReset = () => {
     dispatch(resetGame());
     setMistakes(0);
+    setMisses(0);
+    setTotalShapes(0); // Reset total shapes displayed
     setGameOver(false);
   };
 
@@ -153,7 +173,13 @@ const GameBoard = () => {
       </div>
       <RuleSelector />
       {gameOver ? (
-        <Result score={score} mistakes={mistakes} onReset={handleReset} />
+        <Result
+          score={score}
+          mistakes={mistakes}
+          misses={misses}
+          totalShapes={totalShapes}
+          onReset={handleReset}
+        />
       ) : (
         <GameArea />
       )}
