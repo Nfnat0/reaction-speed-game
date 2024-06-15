@@ -58,8 +58,23 @@ body {
   border-radius: 10px;
   font-size: 30px;
 }
+
 .result-container button {
   font-size: 20px;
+  margin-top: 20px; /* Add margin to create space */
+}
+
+.result-table {
+  text-align: left;
+  margin-top: 20px; /* Add margin to create space */
+}
+
+.result-table tr {
+  line-height: 2; /* Increase line height for rows */
+}
+
+.result-table td {
+  padding-left: 20px; /* Increase line height for rows */
 }
 button {
   padding: 10px 20px;
@@ -136,7 +151,7 @@ input[type="range"]::-moz-range-thumb {
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 4rem;
+  font-size: 3rem;
   color: #fff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
