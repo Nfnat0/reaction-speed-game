@@ -9,7 +9,6 @@ import {
   addShape,
   removeShape,
   incrementScore,
-  // decrementScore,
   decrementTime,
   resetGame,
   removeShapeNoScore,
@@ -20,31 +19,12 @@ import {
   selectRules,
   selectShapes,
 } from "../features/game/gameSelectors";
-
-const generateRandomColor = () => {
-  const colors = ["red", "blue", "green", "yellow"];
-  return colors[Math.floor(Math.random() * colors.length)];
-};
-
-const generateRandomShape = () => {
-  const shapes = ["circle", "square", "star", "triangle"]; // Added new shapes
-  return shapes[Math.floor(Math.random() * shapes.length)];
-};
-
-const generateRandomLetter = (existingLetters) => {
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const availableLetters = letters
-    .split("")
-    .filter((letter) => !existingLetters.includes(letter));
-  const randomIndex = Math.floor(Math.random() * availableLetters.length);
-  return availableLetters[randomIndex];
-};
-
-const generateRandomPosition = (maxWidth, maxHeight) => {
-  const x = Math.floor(Math.random() * (maxWidth - 100));
-  const y = Math.floor(Math.random() * (maxHeight - 100));
-  return { x, y };
-};
+import {
+  generateRandomColor,
+  generateRandomShape,
+  generateRandomLetter,
+  generateRandomPosition,
+} from "../utils";
 
 const GameBoard = () => {
   const dispatch = useDispatch();
@@ -75,7 +55,11 @@ const GameBoard = () => {
       const color = generateRandomColor();
       const shape = generateRandomShape();
       const letter = generateRandomLetter(existingLetters);
-      const position = generateRandomPosition(1600, 500); // Adjust dimensions as needed
+      const existingPositions = store.getState().game.shapes.map((shape) => ({
+        x: shape.x,
+        y: shape.y,
+      }));
+      const position = generateRandomPosition(1600, 500, existingPositions); // Adjust dimensions as needed
       const id = Math.random().toString(36).substring(2, 9); // Generate a unique ID for each shape
       dispatch(addShape({ id, color, shape, letter, ...position }));
       setTotalShapes((totalShapes) => totalShapes + 1); // Increment total shapes displayed
