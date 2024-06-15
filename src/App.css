@@ -112,12 +112,23 @@ h2 {
   background-color: #666;
 }
 
-.rule-selector .list input[type="checkbox"] {
-  margin-right: 10px;
+input[type="range"] {
+  width: 200px;
+  margin: 10px 0;
 }
 
-.rule-selector .list label {
-  color: #fff;
+input[type="range"]::-webkit-slider-thumb {
+  background: #ff7f50;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  background: #ff7f50;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .glow-correct {

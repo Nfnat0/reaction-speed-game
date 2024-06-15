@@ -16,7 +16,10 @@ const RuleSelector = () => {
     dispatch(setRule({ type, value: newValues }));
   };
 
-  const speeds = [500, 1000, 1500]; // Speeds in milliseconds
+  const handleSpeedChange = (event) => {
+    const value = parseInt(event.target.value, 10);
+    dispatch(setRule({ type: "speed", value }));
+  };
 
   return (
     <div className="rule-selector">
@@ -50,15 +53,15 @@ const RuleSelector = () => {
       </div>
       <div className="rule-group">
         <h3>Speed:</h3>
-        {speeds.map((speed) => (
-          <button
-            key={speed}
-            className={`rule-button ${rules.speed === speed ? "active" : ""}`}
-            onClick={() => dispatch(setRule({ type: "speed", value: speed }))}
-          >
-            {speed} ms
-          </button>
-        ))}
+        <input
+          type="range"
+          min="400"
+          max="2000"
+          step="100"
+          value={rules.speed || 1000}
+          onChange={handleSpeedChange}
+        />
+        <span>{rules.speed || 1000} ms</span>
       </div>
     </div>
   );
