@@ -3,6 +3,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setRule } from "../features/game/gameSlice";
 import { selectRules } from "../features/game/gameSelectors";
+import { MAX_SPEED, MIN_SPEED, DEFAULT_SPEED } from "../constants";
 
 const RuleSelector = () => {
   const dispatch = useDispatch();
@@ -55,13 +56,13 @@ const RuleSelector = () => {
         <h3>Speed:</h3>
         <input
           type="range"
-          min="200"
-          max="2000"
+          min={MIN_SPEED}
+          max={MAX_SPEED}
           step="100"
-          value={rules.speed || 1000}
+          value={rules.speed || DEFAULT_SPEED}
           onChange={handleSpeedChange}
         />
-        <span>{rules.speed || 1000} ms</span>
+        <span>{rules.speed || DEFAULT_SPEED} ms</span>
       </div>
     </div>
   );

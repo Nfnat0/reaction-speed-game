@@ -1,19 +1,18 @@
 // src/utils.js
+import { COLORS, SHAPES, LETTERS, MIN_DISTANCE } from "./constants";
+
 export const generateRandomColor = () => {
-  const colors = ["red", "blue", "green", "yellow"];
-  return colors[Math.floor(Math.random() * colors.length)];
+  return COLORS[Math.floor(Math.random() * COLORS.length)];
 };
 
 export const generateRandomShape = () => {
-  const shapes = ["circle", "square", "star", "triangle"];
-  return shapes[Math.floor(Math.random() * shapes.length)];
+  return SHAPES[Math.floor(Math.random() * SHAPES.length)];
 };
 
 export const generateRandomLetter = (existingLetters) => {
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const availableLetters = letters
-    .split("")
-    .filter((letter) => !existingLetters.includes(letter));
+  const availableLetters = LETTERS.split("").filter(
+    (letter) => !existingLetters.includes(letter)
+  );
   const randomIndex = Math.floor(Math.random() * availableLetters.length);
   return availableLetters[randomIndex];
 };
@@ -29,8 +28,8 @@ export const generateRandomPosition = (
   do {
     isOverlapping = false;
     position = {
-      x: Math.floor(Math.random() * (maxWidth - 120)),
-      y: Math.floor(Math.random() * (maxHeight - 120)),
+      x: Math.floor(Math.random() * (maxWidth - MIN_DISTANCE)),
+      y: Math.floor(Math.random() * (maxHeight - MIN_DISTANCE)),
     };
 
     for (const existingPosition of existingPositions) {
@@ -38,7 +37,7 @@ export const generateRandomPosition = (
         Math.pow(existingPosition.x - position.x, 2) +
           Math.pow(existingPosition.y - position.y, 2)
       );
-      if (distance < 120) {
+      if (distance < MIN_DISTANCE) {
         isOverlapping = true;
         break;
       }

@@ -1,10 +1,11 @@
 // src/features/game/gameSlice.js
 import { createSlice } from "@reduxjs/toolkit";
+import { TIME_LEFT } from "../../constants";
 
 const initialState = {
   shapes: [],
   score: 0,
-  timeLeft: 30,
+  timeLeft: TIME_LEFT,
   rules: {
     colors: ["red"],
     shapes: ["circle", "square"],
@@ -42,7 +43,7 @@ const gameSlice = createSlice({
     resetGame: (state) => {
       state.shapes = [];
       state.score = 0;
-      state.timeLeft = 30;
+      state.timeLeft = TIME_LEFT;
     },
     setRule: (state, action) => {
       state.rules[action.payload.type] = action.payload.value;

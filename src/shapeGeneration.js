@@ -7,6 +7,7 @@ import {
   generateRandomLetter,
   generateRandomPosition,
 } from "./utils";
+import { MAX_WIDTH, MAX_HEIGHT, SHAPE_DISPLAY_TIME } from "./constants";
 
 export const generateShape = (rules, dispatch, setTotalShapes, setMisses) => {
   const existingLetters = store
@@ -19,7 +20,11 @@ export const generateShape = (rules, dispatch, setTotalShapes, setMisses) => {
     x: shape.x,
     y: shape.y,
   }));
-  const position = generateRandomPosition(1600, 500, existingPositions); // Adjust dimensions as needed
+  const position = generateRandomPosition(
+    MAX_WIDTH,
+    MAX_HEIGHT,
+    existingPositions
+  );
   const id = Math.random().toString(36).substring(2, 9); // Generate a unique ID for each shape
   dispatch(addShape({ id, color, shape, letter, ...position }));
   setTotalShapes((totalShapes) => totalShapes + 1); // Increment total shapes displayed
@@ -37,5 +42,5 @@ export const generateShape = (rules, dispatch, setTotalShapes, setMisses) => {
       }
     }
     dispatch(removeShapeNoScore(id));
-  }, 1000);
+  }, SHAPE_DISPLAY_TIME);
 };
