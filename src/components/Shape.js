@@ -1,27 +1,29 @@
 // src/components/Shape.js
-const Shape = ({ id, color, shape, letter, x, y }) => {
+import React from "react";
+import { FaCircle, FaSquare, FaStar, FaPlay } from "react-icons/fa"; // Import icons from react-icons
+
+const shapeComponents = {
+  circle: FaCircle,
+  square: FaSquare,
+  star: FaStar,
+  triangle: FaPlay, // Using FaPlay to represent a triangle
+};
+
+const Shape = ({ color, shape, letter, x, y }) => {
+  const ShapeComponent = shapeComponents[shape];
+
   const shapeStyle = {
-    backgroundColor: color,
-    borderRadius: shape === "circle" ? "50%" : "0",
-    width: "100px",
-    height: "100px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
     position: "absolute",
     left: `${x}px`,
     top: `${y}px`,
-    fontSize: "3.5rem",
-    color: "#fff",
-    textShadow: "4px 4px 6px rgba(0, 0, 0, 1)",
-    border: shape === "circle" ? "2px solid #fff" : "none",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-    transition: "transform 0.2s ease",
+    fontSize: "7rem",
+    color: color,
   };
 
   return (
-    <div id={id} style={shapeStyle}>
-      {letter}
+    <div style={shapeStyle}>
+      <ShapeComponent />
+      <div className="letter-overlay">{letter}</div>
     </div>
   );
 };

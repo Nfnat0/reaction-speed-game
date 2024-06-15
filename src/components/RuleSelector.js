@@ -39,7 +39,7 @@ const RuleSelector = () => {
       </div>
       <div className="rule-group">
         <h3>Shapes:</h3>
-        {["circle", "square"].map((shape) => (
+        {["circle", "square", "star", "triangle"].map((shape) => (
           <button
             key={shape}
             className={`rule-button ${

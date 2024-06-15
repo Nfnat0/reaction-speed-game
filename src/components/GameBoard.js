@@ -26,7 +26,7 @@ const generateRandomColor = () => {
 };
 
 const generateRandomShape = () => {
-  const shapes = ["circle", "square"];
+  const shapes = ["circle", "square", "star", "triangle"]; // Added new shapes
   return shapes[Math.floor(Math.random() * shapes.length)];
 };
 
