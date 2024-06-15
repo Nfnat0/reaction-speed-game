@@ -9,7 +9,7 @@ import {
   addShape,
   removeShape,
   incrementScore,
-  decrementScore,
+  // decrementScore,
   decrementTime,
   resetGame,
   removeShapeNoScore,
@@ -136,12 +136,10 @@ const GameBoard = () => {
           setGlowEffect("glow-correct");
         } else {
           setMistakes((mistakes) => mistakes + 1);
-          dispatch(decrementScore());
           setGlowEffect("glow-wrong");
         }
       } else {
         setMistakes((mistakes) => mistakes + 1);
-        dispatch(decrementScore());
         setGlowEffect("glow-wrong");
       }
 
